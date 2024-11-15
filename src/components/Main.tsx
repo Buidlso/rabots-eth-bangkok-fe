@@ -78,7 +78,7 @@ const firebaseConfig = {
 };
 // IMP END - Auth Provider Login
 
-function App() {
+function Main() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -320,4 +320,4 @@ function App() {
   );
 }
 
-export default App;
+export default Main;

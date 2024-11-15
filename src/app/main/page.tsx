@@ -1,8 +1,8 @@
-import App from "@/components/App";
+import Main from "@/components/Main";
 import React from "react";
 
 const page = () => {
-  return <App />;
+  return <Main />;
 };
 
 export default page;
