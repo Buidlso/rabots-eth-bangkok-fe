@@ -75,6 +75,7 @@ const page = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const { mutateAsync: createUser } = useCreateUserMutation();
   const [googleAuthRes, setGoogleAuthRes] = useState<any>();
+  const router = useRouter();
 
   // Firebase Initialisation
   const app = initializeApp(firebaseConfig);
@@ -89,6 +90,21 @@ const page = () => {
 
         if (web3auth.status === ADAPTER_EVENTS.CONNECTED) {
           setLoggedIn(true);
+          console.log("setLoaggedIn(true)");
+          const payload = {
+            name: googleAuthRes.user.providerData?.[0]?.displayName,
+            email: googleAuthRes.user.email || "",
+            uid: googleAuthRes.user.providerData?.[0]?.uid,
+            walletAddress: walletAddress,
+          };
+          localStorage.setItem("ethPrivateKey", ethPrivateKey);
+          localStorage.setItem("ethWalletAddress", walletAddress);
+
+          const { data } = await axios.post<any>(`/users`, payload);
+
+          if (!!data) {
+            router.replace("/rabots");
+          }
         }
       } catch (error) {
         console.error(error);
@@ -142,8 +158,6 @@ const page = () => {
     // IMP END - Get User Information
     console.log({ user });
   };
-
-  const router = useRouter();
 
   const dispatch = useAppDispatch();
 
@@ -212,8 +226,6 @@ const page = () => {
       const user = await getAccounts();
       console.log("userWalletData", user);
 
-      
-      
       if (!user) {
         return;
       }
@@ -221,8 +233,6 @@ const page = () => {
     };
     userWalletInfo();
   }, []);
-
-  console.log("🦁🦁🦁🦁🦁", { googleAuthRes });
 
   return (
     <div className="flex items-center justify-around gap-10 h-full">
