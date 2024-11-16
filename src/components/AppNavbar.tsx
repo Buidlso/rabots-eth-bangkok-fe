@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "../../public/logooo.svg";
 import { Button, buttonVariants } from "./ui/button";
+import { WalletMinimal } from "lucide-react";
 
 export const AppNavbar = () => {
   const [wallet, setWallet] = React.useState<any>(null);
@@ -44,7 +45,14 @@ export const AppNavbar = () => {
 
       {!!wallet?.ethWalletAddress && (
         <Button onClick={handleCopyWalletAddress}>
-          {isCopied ? "Copied" : shortenWalletAddress(wallet?.ethWalletAddress)}
+          {isCopied ? (
+            "Copied"
+          ) : (
+            <div className="flex items-center gap-2">
+              <WalletMinimal className="size-4" />
+              {shortenWalletAddress(wallet?.ethWalletAddress)}
+            </div>
+          )}
         </Button>
       )}
     </div>

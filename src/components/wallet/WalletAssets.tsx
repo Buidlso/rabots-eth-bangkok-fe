@@ -5,7 +5,7 @@ import { useGetTokenLogo } from "@/lib/useGetTokenLogo";
 
 const WalletAssets = ({ walletBalance }: { walletBalance: any }) => {
   return (
-    <div className="bg-black rounded-md px-3 py-6 w-full">
+    <div className="bg-black rounded-md px-6 py-6 w-full">
       <div className="flex items-center justify-between">
         <h4 className="text-white text-lg">Assets</h4>
         <div className="flex items-center gap-3">
