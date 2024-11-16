@@ -29,6 +29,7 @@ import { useCreateUserMutation, useFetchUser } from "@/server/api/user";
 import { useAppDispatch } from "@/redux/hooks";
 import { userActions } from "@/redux/actions";
 import axios from "@/lib/axios";
+import { useRouter } from "next/navigation";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
 // IMP END - Blockchain Calls
@@ -253,6 +254,8 @@ function Main() {
   );
 
   const TheLoggedInView = () => {
+    const router = useRouter();
+
     const dispatch = useAppDispatch();
 
     let userWalletData;
@@ -286,6 +289,7 @@ function Main() {
       console.log({ data });
       if (!!data) {
         dispatch(userActions.setUser(data));
+        router.push("/rabots");
       }
 
       // await createUser({

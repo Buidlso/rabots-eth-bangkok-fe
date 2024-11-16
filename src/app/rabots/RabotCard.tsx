@@ -26,8 +26,8 @@ const RabotCard = ({ botId, description, name, subtitle }: RabotCardProps) => {
         <p className='text-white opacity-80 font-light text-sm'>{subtitle}</p>
       </div>
       <p className='text-white/40 font-light mb-6'>{description}</p>
-      <div className='bg-[#FF5900]/10 border border-[#FF5900] rounded-xl w-full text-white py-3 text-center' >
-        <Link href={`/${botId}`}>Explore</Link>
+      <div className='bg-[#FF5900]/10 border border-[#FF5900] rounded-xl w-full text-white py-3 text-center cursor-pointer'>
+        <Link href={`rabots/${botId}`}>Explore</Link>
       </div>
     </div>
   );

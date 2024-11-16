@@ -4,3 +4,8 @@ export * from './SettingsIcon';
 export * from './FilterIcon';
 export * from './RefreshIcon';
 export * from './CopyIcon';
+export * from './LeftArrowIcon'
+export * from './CrossIcon'
+export * from './GoogleIcon'
+export * from './CheckIcon'
+export * from './TopRightArrowIcon'
