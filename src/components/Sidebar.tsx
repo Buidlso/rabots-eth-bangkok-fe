@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { HeartIcon, RabotIcon, SettingsIcon } from "./icons";
+import { RabotIcon, SettingsIcon } from "./icons";
 import { Button } from "./ui/button";
+import { FileText } from "lucide-react";
+import Link from "next/link";
 
 interface Button {
   id: number;
   label: string;
   icon: any;
-  link?: string;
+  link: string;
 }
 
 const Sidebar = () => {
@@ -16,28 +18,28 @@ const Sidebar = () => {
   const buttons: Button[] = [
     {
       id: 1,
-      label: "rabots",
+      label: "Home",
       link: "/rabots",
       icon: RabotIcon,
     },
-    { id: 2, label: "likes", icon: HeartIcon },
-    { id: 3, label: "settings", icon: SettingsIcon },
+    { id: 2, label: "Analytics", icon: FileText, link: "/analytics" },
+    { id: 3, label: "settings", icon: SettingsIcon, link: "#" },
   ];
 
   return (
-    <div className="py-6 p-3 bg-[#121212] rounded-md w-fit flex flex-col items-center gap-6">
+    <div className="py-6 px-6 bg-[#121212] rounded-md w-fit flex flex-col items-start gap-6 min-w-60">
       {buttons.map((button) => (
-        <Button
+        <Link
+          href={button.link}
           key={button.id}
-          className={`w-12 h-12 flex items-center justify-center  py-2 px-4 rounded-full transition-colors duration-200 hover:bg-none border-2 ${
-            activeButton === button.id
-              ? 'bg-[#FF5900]/15 text-[#FF5900] border-orange-500'
-              : "bg-white/15 text-white border-white"
+          className={` flex items-center justify-center gap-2  transition-colors duration-200 hover:bg-none  ${
+            activeButton === button.id ? " text-[#FF5900] " : " text-white "
           }`}
           onClick={() => setActiveButton(button.id)}
         >
-          <button.icon className="inline-block w-fit" />
-        </Button>
+          <button.icon className="inline-block w-fit flex-shrink-0 " />
+          <p className="capitalize">{button.label}</p>
+        </Link>
       ))}
     </div>
   );

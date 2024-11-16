@@ -15,14 +15,14 @@ const AllRabots = () => {
 
   if (!rabots)
     return (
-      <div className="min-h-screen rounded-md bg-[#121212] px-6 py-3">
+      <div className="min-h-screen rounded-md bg-[#121212] px-6 py-6">
         <p className="text-white">loading...</p>
       </div>
     );
 
   return (
-    <div className="min-h-screen rounded-md bg-[#121212] px-6 py-3">
-      <h3 className="text-white mb-3">Rabots</h3>
+    <div className="min-h-screen rounded-md bg-[#121212] px-6 py-6">
+      {/* <h3 className="text-accent text-xl mb-4">Rabots</h3> */}
       <div className=" flex flex-wrap gap-2">
         {rabots?.map((rabot) => (
           <RabotCard
@@ -30,6 +30,7 @@ const AllRabots = () => {
             name={rabot.name}
             botId={rabot.id}
             description={rabot.description}
+            botType={rabot.type}
             subtitle={"Earn 3-4% APR with ezETH"}
           />
         ))}

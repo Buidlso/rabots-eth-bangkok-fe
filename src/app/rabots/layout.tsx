@@ -6,7 +6,7 @@ export default function RabotsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className='bg-black h-full overflow-hidden flex items-stretch justify-center gap-8 p-10'>
+    <div className='bg-black h-full overflow-hidden flex items-stretch justify-center gap-6 p-10 py-4'>
      <Sidebar />
       <main className='overflow-y-auto no-scrollbar'>{children}</main>
       <Wallet />

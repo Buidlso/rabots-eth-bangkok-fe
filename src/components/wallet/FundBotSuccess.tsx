@@ -15,6 +15,9 @@ const FundBotSuccess = ({ txHash }: { txHash: string }) => {
 
   const handleCopyTransactionHash = () => {
     navigator.clipboard.writeText(txHash);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1000);
   };
   const handleGoBack = () => {
     dispatch(walletActions.setWalletScreen("BALANCE"));

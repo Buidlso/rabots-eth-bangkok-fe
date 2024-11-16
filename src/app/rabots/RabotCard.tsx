@@ -3,19 +3,31 @@ import Image from "next/image";
 import dummyRabotIcon from "../../components/Icons/dummyRabotIcon.png";
 import Link from "next/link";
 import { useFetchRabotById } from "@/server/api/rabots";
+import { useGetRabotIcon } from "@/lib/useGetRabotIcon";
 
 type RabotCardProps = {
   botId: any;
   name: any;
   subtitle: any;
   description: string | null;
+  botType: any;
 };
 
-const RabotCard = ({ botId, description, name, subtitle }: RabotCardProps) => {
+const RabotCard = ({
+  botId,
+  description,
+  name,
+  subtitle,
+  botType,
+}: RabotCardProps) => {
+  const rabotIcon = useGetRabotIcon({
+    botType,
+  });
+
   return (
-    <div className="bg-black p-6  flex-1 min-w-80">
+    <div className="bg-black p-6  flex-1 min-w-80 rounded-md">
       <Image
-        src={dummyRabotIcon}
+        src={rabotIcon.src}
         alt="dummy-rabot-icon"
         width={50}
         height={50}

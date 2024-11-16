@@ -13,6 +13,7 @@ import WithdrawModal from "@/components/withdraw/WithdrawModal";
 import { useFetchRabotById, useFetchUserBotById } from "@/server/api/rabots";
 import { TGetBotResDto, TGetUserBotResDto } from "@/server/dtos/rabot.dto";
 import axios from "@/lib/axios";
+import { useGetRabotIcon } from "@/lib/useGetRabotIcon";
 
 const rabotDetails = () => {
   const params = useParams<{ id: string }>();
@@ -62,6 +63,14 @@ const rabotDetails = () => {
     dispatch(walletActions.setWalletScreen("BALANCE"));
   }
 
+  if (!rabotData) {
+    return <div>Loading...</div>;
+  }
+
+  const rabotIcon = useGetRabotIcon({
+    botType: (rabotData as any).type,
+  });
+
   return (
     <div className="rounded-xl bg-[#121212] p-6 h-full">
       <Link
@@ -77,7 +86,7 @@ const rabotDetails = () => {
         <div>
           <div className="mb-3 flex items-center gap-6">
             <Image
-              src={dummyrabotIcon}
+              src={rabotIcon.src}
               alt="dummy-rabotData-icon"
               width={50}
               height={50}

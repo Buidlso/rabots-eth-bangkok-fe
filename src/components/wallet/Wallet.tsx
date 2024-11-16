@@ -29,14 +29,14 @@ const Wallet = () => {
 
   if (!wallet)
     return (
-      <div className="bg-[#121212] rounded-md py-6 px-3 min-w-96">
+      <div className="bg-[#121212] rounded-md py-6 px-6 min-w-96">
         <p className="text-white">loading...</p>;
       </div>
     );
 
   return (
-    <div className="bg-[#121212] rounded-md py-6 px-3 min-w-96">
-      <div className="flex items-center justify-between mb-8">
+    <div className="bg-[#121212] rounded-md py-6 px-6 min-w-96">
+      {/* <div className="flex items-center justify-between mb-8">
         <h1 className="text-xl text-white">Wallet</h1>
         <div className="flex items-center gap-1 ">
           <p className="text-white/40 text-sm">
@@ -44,7 +44,7 @@ const Wallet = () => {
           </p>
           <CopyIcon className="text-white/40 cursor-pointer" />
         </div>
-      </div>
+      </div> */}
       {walletScreen === "BALANCE" ? (
         <WalletBalance walletAddress={wallet?.ethWalletAddress} />
       ) : (
