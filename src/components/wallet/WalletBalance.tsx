@@ -5,6 +5,12 @@ import { useGetWalletBalances } from "@/server/api/wallet";
 const WalletBalance = ({ walletAddress }: { walletAddress: string }) => {
   const { data: walletBalance } = useGetWalletBalances(walletAddress);
 
+  if(!walletBalance) return (
+    <div className="flex flex-col items-center w-full gap-3">
+      <p className="text-white">loading...</p>
+    </div>
+  )
+  
   return (
     <div className="flex flex-col items-center w-full gap-3">
       <div className="bg-black rounded-xl py-6 text-center flex flex-col items-center justify-center w-full">

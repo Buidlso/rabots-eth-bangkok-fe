@@ -13,6 +13,13 @@ type TDummyRabots = {
 const AllRabots = () => {
   const { data: rabots } = useFetchRabots();
 
+  if (!rabots)
+    return (
+      <div className="min-h-screen rounded-md bg-[#121212] px-6 py-3">
+        <p className="text-white">loading...</p>
+      </div>
+    );
+
   return (
     <div className="min-h-screen rounded-md bg-[#121212] px-6 py-3">
       <h3 className="text-white mb-3">Rabots</h3>

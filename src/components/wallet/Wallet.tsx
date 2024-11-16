@@ -27,7 +27,12 @@ const Wallet = () => {
     return `${firstFour}...${lastFour}`;
   };
 
-  if (!wallet) return <p>loading...</p>;
+  if (!wallet)
+    return (
+      <div className="bg-[#121212] rounded-md py-6 px-3 min-w-96">
+        <p className="text-white">loading...</p>;
+      </div>
+    );
 
   return (
     <div className="bg-[#121212] rounded-md py-6 px-3 min-w-96">
@@ -35,7 +40,7 @@ const Wallet = () => {
         <h1 className="text-xl text-white">Wallet</h1>
         <div className="flex items-center gap-1 ">
           <p className="text-white/40 text-sm">
-            {shortenWalletAddress(wallet?.ethWalletAddress)}...
+            {shortenWalletAddress(wallet?.ethWalletAddress)}
           </p>
           <CopyIcon className="text-white/40 cursor-pointer" />
         </div>
@@ -43,7 +48,10 @@ const Wallet = () => {
       {walletScreen === "BALANCE" ? (
         <WalletBalance walletAddress={wallet?.ethWalletAddress} />
       ) : (
-        <FundBot walletAddress={wallet?.ethWalletAddress} privateKey={wallet?.ethPrivateKey} />
+        <FundBot
+          walletAddress={wallet?.ethWalletAddress}
+          privateKey={wallet?.ethPrivateKey}
+        />
       )}
     </div>
   );
