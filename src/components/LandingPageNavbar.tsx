@@ -20,8 +20,8 @@ export const LandingPageNavbar = () => {
 
       {/* cta */}
       <Link
-        href="/main"
-        className={cn(buttonVariants({size: 'sm'}), "bg-white text-accent")}
+        href="/login"
+        className={cn(buttonVariants({size: 'sm'}), "bg-accent text-white")}
       >
         Launch App
       </Link>

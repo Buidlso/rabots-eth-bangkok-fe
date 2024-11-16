@@ -17,7 +17,7 @@ export default function Home() {
           Rabots are quickest way to expand how you use crypto
         </p>
         <Link
-          href="/main"
+          href="/login"
           className={cn(
             buttonVariants({ size: "lg", variant: "outline" }),
             "bg-accent border-accent text-black mt-6 hover:opacity-80"
