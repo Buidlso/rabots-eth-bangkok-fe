@@ -26,7 +26,7 @@ const FundBotSuccess = ({ txHash }: { txHash: string }) => {
 
   return (
     <div className="bg-black rounded-xl w-full p-6 mb-5 ">
-      <p className="text-white text-xl text-center mb-4">Fund Bot 3</p>
+      {/* <p className="text-white text-xl text-center mb-4">Fund Bot 3</p> */}
       <div className="text-center">
         <p className="text-white">transaction hash:</p>
         <div className="flex items-center gap-1">

@@ -91,7 +91,9 @@ const FundBot = ({
         <FundBotLoading />
       ) : (
         <div className="bg-black rounded-xl w-full p-6 mb-5">
-          <h1 className="text-center text-white text-xl mb-6">Fund Bot 3</h1>
+          <h1 className="text-center text-white text-xl mb-6">{
+            rabotDetails.name
+            }</h1>
           <div className="mb-6">
             <div className="mb-2">
               <p className="text-white text-sm mb-2">
@@ -108,8 +110,8 @@ const FundBot = ({
                       />
                     </div>
                   )}
-                  <p className="text-white">
-                    {selectedToken.token ?? "Select a token"}
+                  <p className="text-white text-xs">
+                    {selectedToken.token ?? "Select token"}
                   </p>
                 </div>
                 <div className="h-full w-[2px] bg-white/70 flex-shrink-0" />

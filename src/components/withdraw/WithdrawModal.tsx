@@ -28,7 +28,7 @@ const WithdrawModal = ({ rabotData }: { rabotData: any }) => {
 
         <div className="flex items-center gap-3 mb-6">
           <Image src={dummyBotImage} alt="rabot-img" className="w-12 h-12" />
-          <p className="text-white text-xl">Bot 3</p>
+          <p className="text-white text-xl">{rabotData?.name}</p>
         </div>
 
         <WithdrawInput rabotData={rabotData} />
