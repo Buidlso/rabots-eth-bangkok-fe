@@ -8,8 +8,16 @@ import { getInfuraRpcNetwork } from "@/lib/utils";
 import { ethers } from "ethers";
 import { Button } from "../ui/button";
 import FundBotSuccess from "./FundBotSuccess";
+import { useGetWalletBalances } from "@/server/api/wallet";
+import { useWalletStore } from "@/redux/hooks";
 
-const FundBot = () => {
+const FundBot = ({
+  walletAddress,
+  privateKey,
+}: {
+  walletAddress: string;
+  privateKey: string;
+}) => {
   const [inputTokenAmount, setInputTokenAmount] = useState<number>(0);
   const [isFundError, setIsFundError] = useState(false);
   const [isFundSuccess, setIsFundSuccess] = useState(false);
@@ -23,7 +31,9 @@ const FundBot = () => {
     token: undefined,
     network: undefined,
   });
-  const privateKey = "0x1234567890"; // Replace with actual private key
+
+  const { selectedRabot } = useWalletStore();
+  console.log({ selectedRabot });
 
   const sendTransaction = async () => {
     const rpcUrl = getInfuraRpcNetwork(selectedToken?.network!);
@@ -57,6 +67,8 @@ const FundBot = () => {
       setErrorTransaction((error as any).shortMessage);
     }
   }
+
+  const { data: walletBalance } = useGetWalletBalances(walletAddress);
 
   return (
     <div className="max-w-md">
@@ -103,7 +115,7 @@ const FundBot = () => {
         </div>
       )}
 
-      <SelectFundNetwork />
+      {/* <SelectFundNetwork /> */}
       <Button
         onClick={handleSendTransaction}
         className="bg-[#FF5900] text-black rounded-full w-full mt-5 hover:bg-[#FF5900]"

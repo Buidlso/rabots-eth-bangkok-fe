@@ -43,7 +43,7 @@ const Wallet = () => {
       {walletScreen === "BALANCE" ? (
         <WalletBalance walletAddress={wallet?.ethWalletAddress} />
       ) : (
-        <FundBot />
+        <FundBot walletAddress={wallet?.ethWalletAddress} privateKey={wallet?.ethPrivateKey} />
       )}
     </div>
   );

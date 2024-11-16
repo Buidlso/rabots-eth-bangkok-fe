@@ -5,29 +5,51 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import React from "react";
 import dummyRabotIcon from "../../../components/icons/dummyRabotIcon.png";
-import { useAppDispatch, useRabotsStore } from "@/redux/hooks";
+import { useAppDispatch, useRabotsStore, useUserStore } from "@/redux/hooks";
 import { walletActions } from "@/redux/actions";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import WithdrawModal from "@/components/withdraw/WithdrawModal";
-import { useFetchRabotById } from "@/server/api/rabots";
+import { useFetchRabotById, useFetchUserBotById } from "@/server/api/rabots";
+import { TGetBotResDto, TGetUserBotResDto } from "@/server/dtos/rabot.dto";
+import axios from "@/lib/axios";
 
 const RabotsDetails = () => {
   const params = useParams<{ id: string }>();
+  const { user } = useUserStore();
 
   const { data: rabot } = useFetchRabotById(params.id);
+
+  const createUserBot = async () => {
+    const payload = {
+      userId: user?.id,
+      botId: rabot?.id,
+    };
+    const res = await axios.post(`/user-bots`, payload);
+
+    const smartWalletAddress = res.data.smartWalletAddress;
+    return smartWalletAddress;
+  };
 
   // const { rabot } = useRabotsStore();
 
   const dispatch = useAppDispatch();
 
-  function handleFundBotClick() {
+  async function handleFundBotClick() {
+    let newSmartWalletAddress = "";
+    if (!rabot?.userBotSmartWalletAddress) {
+      newSmartWalletAddress = await createUserBot();
+    }
+
     dispatch(walletActions.setWalletScreen("FUND"));
+    dispatch(walletActions.setSelectedRabot(rabot));
   }
 
   function handleBackClick() {
     dispatch(walletActions.setWalletScreen("BALANCE"));
   }
+
+  console.log({ rabot });
 
   return (
     <div className="rounded-xl bg-[#121212] p-6 h-full">

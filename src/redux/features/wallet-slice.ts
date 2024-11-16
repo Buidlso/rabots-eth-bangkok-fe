@@ -1,9 +1,11 @@
+import { TGetBotResDto } from "@/server/dtos/rabot.dto";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type TWalletState = {
   walletBalance: any;
   txHash: any;
   walletScreen: "BALANCE" | "FUND";
+  selectedRabot: any;
 };
 
 // states
@@ -11,6 +13,7 @@ const initialState: TWalletState = {
   walletBalance: undefined,
   txHash: undefined,
   walletScreen: "BALANCE",
+  selectedRabot: undefined,
 };
 
 const walletSlice = createSlice({
@@ -25,6 +28,9 @@ const walletSlice = createSlice({
     },
     setWalletScreen(state, action: PayloadAction<"BALANCE" | "FUND">) {
       state.walletScreen = action.payload;
+    },
+    setSelectedRabot(state, action: PayloadAction<any>) {
+      state.selectedRabot = action.payload;
     },
   },
 });
