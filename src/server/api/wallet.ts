@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useAppDispatch } from "@/redux/hooks";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { walletActions } from "@/redux/actions";
+import axios from "@/lib/axios";
 
 export const useGetWalletBalances = (
   walletAddress: string,
@@ -11,7 +12,9 @@ export const useGetWalletBalances = (
   const dispatch = useAppDispatch();
 
   async function fetchWallet() {
-    const { data } = await axios.get(`/wallet/balance/${walletAddress}`);
+    const { data } = await axios.get(
+      `http://localhost:8000/wallet/balance/${walletAddress}`
+    );
     return data;
   }
 
@@ -62,7 +65,10 @@ export const useCreateTransaction = (
   };
 
   async function fetchWallet() {
-    const { data } = await axios.post(`/transactions`, payload);
+    const { data } = await axios.post(
+      `http://localhost:8000/transactions`,
+      payload
+    );
     return data;
   }
 

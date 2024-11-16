@@ -25,6 +25,10 @@ import { useEffect, useState } from "react";
 // IMP END - Auth Provider Login
 // IMP START - Blockchain Calls
 import RPC from "../lib/ethersRPC";
+import { useCreateUserMutation, useFetchUser } from "@/server/api/user";
+import { useAppDispatch } from "@/redux/hooks";
+import { userActions } from "@/redux/actions";
+import axios from "@/lib/axios";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
 // IMP END - Blockchain Calls
@@ -81,6 +85,8 @@ const firebaseConfig = {
 function Main() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
+  const { mutateAsync: createUser } = useCreateUserMutation();
+  const [googleAuthRes, setGoogleAuthRes] = useState<any>();
 
   // Firebase Initialisation
   const app = initializeApp(firebaseConfig);
@@ -110,6 +116,7 @@ function Main() {
       const auth = getAuth(app);
       const googleProvider = new GoogleAuthProvider();
       const res = await signInWithPopup(auth, googleProvider);
+      setGoogleAuthRes(res);
       console.log(res);
       return res;
     } catch (err) {
@@ -164,19 +171,6 @@ function Main() {
 
   // IMP START - Blockchain Calls
   // Check the RPC file for the implementation
-  const getAccounts = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const address = await RPC.getAccounts(provider);
-
-    const eth_private_key = await provider?.request({
-      method: "eth_private_key",
-    });
-    console.log(eth_private_key);
-    uiConsole(address, eth_private_key);
-  };
 
   const getBalance = async () => {
     if (!provider) {
@@ -224,9 +218,9 @@ function Main() {
           </button>
         </div>
         <div>
-          <button onClick={getAccounts} className="card">
+          {/* <button onClick={getAccounts} className="card">
             Get Accounts
-          </button>
+          </button> */}
         </div>
         <div>
           <button onClick={getBalance} className="card">
@@ -259,48 +253,99 @@ function Main() {
   );
 
   const TheLoggedInView = () => {
+    const dispatch = useAppDispatch();
+
     let userWalletData;
+    const [ethPrivateKey, setEthPrivateKey] = useState("");
+    const [walletAddress, setWalletAddress] = useState("");
+    const [googleUserInfo, setGoogleUserInfo] = useState<any>();
 
     const getIsUserAnOldUserFromLocalStorage = () => {
       const userWalletInfo = localStorage.getItem("userLocalStorageData");
       return userWalletInfo;
     };
 
-    const createUserAccount = async () => {
+    const createUserAccount = async (
+      ethPrivateKey: string,
+      walletAddress: string
+    ) => {
       // await createUserAccount()
+
+      console.log({ walletAddress });
+
+      const payload = {
+        name: googleAuthRes.user.providerData?.[0]?.displayName,
+        email: googleAuthRes.user.email || "",
+        uid: googleAuthRes.user.providerData?.[0]?.uid,
+        walletAddress: walletAddress,
+      };
+
+      console.log("payload", payload);
+
+      const { data } = await axios.post<any>(`/users`, payload);
+      console.log({ data });
+      if (!!data) {
+        dispatch(userActions.setUser(data));
+      }
+
+      // await createUser({
+      //   name: "",
+      //   email: "",
+      //   walletAddress: "",
+      // });
+
       console.log("createUserAccount");
     };
 
     const getUserAccount = async () => {
-      // await createUserAccount()
-      console.log("getUserAccount");
+      // useFetchUser();
+    };
+
+    const getAccounts = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+
+      getUserInfo();
+      const address = await RPC.getAccounts(provider);
+
+      const ethPrivateKey = await provider?.request({
+        method: "eth_private_key",
+      });
+      setEthPrivateKey(ethPrivateKey as string);
+      setWalletAddress(address);
+      console.log(ethPrivateKey);
+      // uiConsole(address, ethPrivateKey);
+      return {
+        address,
+        ethPrivateKey,
+      };
     };
 
     useEffect(() => {
       const userWalletInfo = async () => {
         const user = await getAccounts();
+        console.log("userWalletData", user);
 
-        localStorage.setItem("userLocalStorageData", JSON.stringify(user));
-
-        return user;
+        createUserAccount((user as any).ethPrivateKey, (user as any).address);
       };
-      userWalletData = userWalletInfo();
-
-      const userFromLocalStorage = getIsUserAnOldUserFromLocalStorage();
-
-      if (!userFromLocalStorage || userFromLocalStorage === "undefined") {
-        createUserAccount();
-      } else {
-        getUserAccount();
-      }
+      userWalletInfo();
     }, []);
+
+    console.log("🦁🦁🦁🦁🦁", { googleAuthRes });
 
     return (
       <div className="flex-container">
         <div>
-          <button onClick={login} className="card">
-            Login
-          </button>
+          <p className="text-red-300">
+            walletAddress:{" "}
+            <span className="text-black font-light">{walletAddress}</span>
+          </p>
+          <p className="text-red-300">
+            privateKey:{" "}
+            <span className="text-black font-light">{ethPrivateKey}</span>
+          </p>
         </div>
       </div>
     );

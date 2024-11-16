@@ -1,18 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { useAppDispatch } from "@/redux/hooks";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { rabotsActions } from "@/redux/actions";
+import axios from "@/lib/axios";
 
-export const useFetchRabots = (
-  page: number,
-  size: number,
-  dependsOn = true
-) => {
+export const useFetchRabots = (page: number, dependsOn = true) => {
   const dispatch = useAppDispatch();
 
   async function fetchRabots() {
-    const { data } = await axios.get(`/rabots`);
+    const { data } = await axios.get(`http://localhost:8000/rabots`);
     return data;
   }
 
@@ -40,7 +37,9 @@ export const useFetchRabotById = (rabotsId: string, dependsOn = true) => {
   const dispatch = useAppDispatch();
 
   async function fetchRabots() {
-    const { data } = await axios.get(`/rabots/${rabotsId}`);
+    const { data } = await axios.get(
+      `http://localhost:8000/rabots/${rabotsId}`
+    );
     return data;
   }
 
