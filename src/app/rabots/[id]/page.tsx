@@ -64,7 +64,11 @@ const rabotDetails = () => {
   }
 
   if (!rabotData) {
-    return <div>Loading...</div>;
+    return (
+      <div className="rounded-xl bg-[#121212] p-6 h-full w-full">
+        <p className="text-white">loading...</p>
+      </div>
+    );
   }
 
   const rabotIcon = useGetRabotIcon({
@@ -72,7 +76,7 @@ const rabotDetails = () => {
   });
 
   return (
-    <div className="rounded-xl bg-[#121212] p-6 h-full">
+    <div className="rounded-xl bg-[#121212] p-6 h-full w-full">
       <Link
         href={"/rabots"}
         className="text-[#FF5900] flex items-center gap-2 cursor-pointer mb-3"

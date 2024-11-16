@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-black h-screen`}>
         <ReduxProvider>
           <QueryProviders>
-            <div className="flex flex-col">
+            <div className="flex flex-col h-screen w-full">
               {!isLandingPage && <AppNavbar />}
               {children}
             </div>

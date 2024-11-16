@@ -5,7 +5,7 @@ import { TopRightArrowIcon } from "../icons";
 import { useAppDispatch } from "@/redux/hooks";
 import { walletActions } from "@/redux/actions";
 import { Router } from "lucide-react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const FundBotSuccess = ({ txHash }: { txHash: string }) => {
   const [isCopied, setIsCopied] = React.useState(false);
@@ -29,15 +29,17 @@ const FundBotSuccess = ({ txHash }: { txHash: string }) => {
       <p className="text-white text-xl text-center mb-4">Fund Bot 3</p>
       <div className="text-center">
         <p className="text-white">transaction hash:</p>
-        <Link
-          href={`https://base.blockscout.com/tx/${txHash}`}
-          target="_blank"
-          rel="noreferrer"
-          className="text-white"
-        >
-          explorer link
-        </Link>
-        <TopRightArrowIcon />
+        <div className="flex items-center gap-1">
+          <Link
+            href={`https://base.blockscout.com/tx/${txHash}`}
+            target="_blank"
+            rel="noreferrer"
+            className="text-white"
+          >
+            explorer link
+          </Link>
+          <TopRightArrowIcon />
+        </div>
       </div>
 
       <Button

@@ -93,6 +93,15 @@ const WithdrawInput = ({ rabotData }: { rabotData: TGetBotResDto }) => {
     console.log("🤸‍♂️🤸‍♂️🤸‍♂️🤸‍♂️🤸‍♂️🤸‍♂️", { res });
   };
 
+  const shortenWalletAddresss = (address: string) => {
+    if (address) {
+      const firstFive = address.substring(0, 5);
+      const lastFive = address.substring(address.length - 5);
+      return `${firstFive}...${lastFive}`;
+    }
+    return "";
+  };
+
   return (
     <>
       {transactionHash ? (
@@ -171,7 +180,9 @@ const WithdrawInput = ({ rabotData }: { rabotData: TGetBotResDto }) => {
 
           <div className="flex items-center gap-1 mb-6  justify-center">
             <p className="text-white">Wallet:</p>
-            <p className="text-white/40">{walletAddress}</p>
+            <p className="text-white/40">
+              {shortenWalletAddresss(walletAddress)}
+            </p>
           </div>
           <Button
             onClick={handleWithdrawClick}
