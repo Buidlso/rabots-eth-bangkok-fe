@@ -10,18 +10,14 @@ export const LandingPageNavbar = () => {
     <div className="px-6 py-4 my-10 mx-auto border border-[#3A3A3A] rounded-[10px] bg-[#1d1d1d86] flex items-center justify-between w-3/4">
       {/* logo */}
       <Link className="logo flex items-center gap-2" href={"/"}>
-        <Image
-          src={logo}
-          alt="logo"
-          className="w-8"
-        />
+        <Image src={logo} alt="logo" className="w-8" />
         <div className="text-white text-lg font-semibold">rabots</div>
       </Link>
 
       {/* cta */}
       <Link
         href="/login"
-        className={cn(buttonVariants({size: 'sm'}), "bg-accent text-white")}
+        className={cn(buttonVariants({ size: "sm" }), "bg-accent text-white")}
       >
         Launch App
       </Link>
