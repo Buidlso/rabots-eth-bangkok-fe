@@ -6,6 +6,9 @@ import { ethers } from "ethers";
 import { TGetBotResDto } from "@/server/dtos/rabot.dto";
 import axios from "@/lib/axios";
 import { useUserStore } from "@/redux/hooks";
+import { set } from "zod";
+import WithdrawLoading from "./WithdrawLoading";
+import WithdrawSuccess from "./WithdrawSuccess";
 
 const WithdrawInput = ({ rabotData }: { rabotData: TGetBotResDto }) => {
   const withdrawAmountSelectOptions = ["10%", "25%", "50%", "75%", "100%"];
@@ -14,6 +17,7 @@ const WithdrawInput = ({ rabotData }: { rabotData: TGetBotResDto }) => {
   const [estimatedGas, setEstimatedGas] = useState<string | null>(null);
   const { user } = useUserStore();
   const [transactionHash, setTransactionHash] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [wallet, setWallet] = useState<any>(null);
 
@@ -63,6 +67,7 @@ const WithdrawInput = ({ rabotData }: { rabotData: TGetBotResDto }) => {
   console.log("🤸‍♂️🤸‍♂️🤸‍♂️🤸‍♂️🤸‍♂️🤸‍♂️", { withdrawPercentage });
 
   const handleWithdrawClick = async () => {
+    setIsLoading(true);
     const userId = user?.id;
 
     const payload = {
@@ -80,6 +85,7 @@ const WithdrawInput = ({ rabotData }: { rabotData: TGetBotResDto }) => {
     if (txHash) {
       setTransactionHash(txHash);
       console.log("Transaction Hash:", txHash);
+      setIsLoading(false);
     } else {
       console.error("Transaction hash not found in response");
     }
@@ -90,11 +96,9 @@ const WithdrawInput = ({ rabotData }: { rabotData: TGetBotResDto }) => {
   return (
     <>
       {transactionHash ? (
-        <div className="bg-black rounded-xl p-4 mb-3">
-          <h2 className="text-[#FF5900] text-xl">
-            Total Earned: {userBotDepositedAmount} eth
-          </h2>
-        </div>
+        <WithdrawSuccess transactionHash={transactionHash} />
+      ) : isLoading ? (
+        <WithdrawLoading />
       ) : (
         <div>
           <div className="bg-black rounded-xl p-4 mb-3">
