@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import RabotCard from "./RabotCard";
 
@@ -70,7 +72,7 @@ const AllRabots = () => {
       <div className="flex justify-between items-center">
         <p>walletAddress: {walletAddress}</p>
         <p>ethPrivateKey: {ethPrivateKey}</p>
-        </div>
+      </div>
       <div className=" flex flex-wrap gap-2">
         {dummyRabots.map((rabot) => (
           <RabotCard

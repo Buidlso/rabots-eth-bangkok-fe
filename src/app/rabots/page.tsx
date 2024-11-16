@@ -1,3 +1,5 @@
+'use client'
+
 import AllRabots from "./AllRabots";
 
 export default function page() {

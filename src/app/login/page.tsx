@@ -1,6 +1,8 @@
+'use client'
+
 import { GoogleIcon } from "@/components/icons";
 import Image from "next/image";
-import loginBg from "/public/login-bg.png";
+import loginBg from "../../../public/login-bg.png";
 import { Button } from "@/components/ui/button";
 import {
   ADAPTER_EVENTS,
