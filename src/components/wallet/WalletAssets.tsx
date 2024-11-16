@@ -27,27 +27,31 @@ const WalletAssets = ({ walletBalance }: { walletBalance: any }) => {
         return (
           <div
             key={index}
-            className="flex items-center justify-between py-3 border-b border-[#3A3A3A]/60"
+            className={`flex items-center justify-between py-3 
+              ${index < walletBalance?.assets.length -1 && "border-b"}
+               border-[#3A3A3A]/60`}
           >
             <div className="flex items-center gap-2">
               <div className="relative">
                 {tokenLogo && (
-                  <img src={tokenLogo} className="w-6 aspect-square" />
+                  <img src={tokenLogo.src} className="w-6 aspect-square" />
                 )}
                 {blockchainLogo && (
                   <img
-                    src={blockchainLogo}
+                    src={blockchainLogo.src}
                     className="absolute bottom-0 right-0 w-3 aspect-square bg-white rounded-full p-1"
                   />
                 )}
               </div>
-              <div className="w-10 h-10 rounded-full bg-muted"></div>
               <p className="text-white">{asset.tokenSymbol}</p>
             </div>
-            <div>
-              <p>{parseFloat(asset.balanceUsd)?.toFixed(3)}</p>
-              <p className="text-muted">
-                {asset.balance} {asset.tokenSymbol}
+            <div className="flex flex-col items-end">
+              <p className="text-white">
+                ${parseFloat(asset.balanceUsd)?.toFixed(3)}
+              </p>
+              <p className="text-white text-sm">
+                {parseFloat(asset.balance)?.toFixed(3)}
+                {asset.tokenSymbol}
               </p>
             </div>
           </div>

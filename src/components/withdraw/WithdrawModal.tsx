@@ -6,32 +6,17 @@ import { CrossIcon } from "../icons";
 import dummyBotImage from "@/components/icons/dummyRabotIcon.png";
 import Image from "next/image";
 import WithdrawInput from "./WithdrawInput";
-import WithdrawLoading from "./WithdrawLoading";
-import WithdrawSuccess from "./WithdrawSuccess";
-import WithdrawError from "./WithdrawError";
 
-const WithdrawModal = () => {
-  const [isWithdrawState, setIsWithdrawState] = useState<
-    "loading" | "success" | "error" | "input"
-  >("input");
-
-  function renderContent() {
-    switch (isWithdrawState) {
-      case "loading":
-        return <WithdrawLoading />;
-      case "success":
-        return <WithdrawSuccess />;
-      case "error":
-        return <WithdrawError />;
-      default:
-        return <WithdrawInput />;
-    }
-  }
+const WithdrawModal = ({ rabotData }: { rabotData: any }) => {
+  const amountDeposited = rabotData?.userBotDepositedAmount;
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-[#FF5900]/10 border-2 border-[#FF5900] flex-1 rounded-xl">
+        <Button
+          // disabled={parseFloat(amountDeposited ?? "0") <= 0}
+          className="bg-[#FF5900]/10 border-2 border-[#FF5900] flex-1 rounded-xl"
+        >
           Withdraw
         </Button>
       </DialogTrigger>
@@ -46,7 +31,7 @@ const WithdrawModal = () => {
           <p className="text-white text-xl">Bot 3</p>
         </div>
 
-        {renderContent()}
+        <WithdrawInput rabotData={rabotData} />
       </DialogContent>
     </Dialog>
   );

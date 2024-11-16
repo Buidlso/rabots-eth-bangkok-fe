@@ -11,6 +11,9 @@ import FundBotSuccess from "./FundBotSuccess";
 import { useGetWalletBalances } from "@/server/api/wallet";
 import { useWalletStore } from "@/redux/hooks";
 import SelectWalletAssets from "./SelectWalletAssets";
+import { useGetBlockchainLogo } from "@/lib/useGetBlockchainLogo";
+import rabotDatasDetails from "@/app/rabots/[id]/page";
+import rabotDetails from "@/app/rabots/[id]/page";
 
 const FundBot = ({
   walletAddress,
@@ -44,8 +47,7 @@ const FundBot = ({
     try {
       setIsFundLoading(true);
       const tx = await signer.sendTransaction({
-        // to: fundBotSelectedBot.userBotSmartWalletAddress,
-        to: "0x1234567890", // Replace with actual wallet address
+        to: selectedRabot.userBotSmartWalletAddress,
         value: ethers.parseUnits(`${inputTokenAmount}`, "ether"),
       });
       setTransactionHash(tx.hash);
@@ -62,6 +64,10 @@ const FundBot = ({
       setErrorTransaction("Please enter a valid amount");
       return;
     }
+    if(!selectedToken.token){
+      setErrorTransaction("Please select a token");
+      return;
+    }
     try {
       await sendTransaction();
     } catch (error) {
@@ -71,11 +77,15 @@ const FundBot = ({
 
   const { data: walletBalance } = useGetWalletBalances(walletAddress);
 
+  const blockchainLogo = useGetBlockchainLogo({
+    blockchain: selectedToken.network,
+  });
+
   return (
     <div className="max-w-md">
       {isFundError ? (
         <FundBotError setIsFundError={setIsFundError} />
-      ) : isFundSuccess ? (
+      ) : transactionHash ? (
         <FundBotSuccess txHash={transactionHash} />
       ) : isFundLoading ? (
         <FundBotLoading />
@@ -89,10 +99,18 @@ const FundBot = ({
               </p>
               <div className="flex items-stretch h-[44px]">
                 <div className="bg-[#121212] rounded-l-xl rounded-bl-xl py-2 px-3 flex items-center gap-2">
-                  <div className="bg-black rounded-full w-8 h-8 flex items-center justify-center">
-                    <Image src={ethIcon} alt="eth-icon" className="w-6 h-6" />
-                  </div>
-                  <p className="text-white">Eth</p>
+                  {selectedToken.token && (
+                    <div className="bg-black rounded-full w-8 h-8 flex items-center justify-center">
+                      <Image
+                        src={blockchainLogo}
+                        alt="eth-icon"
+                        className="w-6 h-6"
+                      />
+                    </div>
+                  )}
+                  <p className="text-white">
+                    {selectedToken.token ?? "Select a token"}
+                  </p>
                 </div>
                 <div className="h-full w-[2px] bg-white/70 flex-shrink-0" />
                 <div>

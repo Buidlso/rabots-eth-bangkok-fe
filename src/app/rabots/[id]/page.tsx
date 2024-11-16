@@ -14,7 +14,7 @@ import { useFetchRabotById, useFetchUserBotById } from "@/server/api/rabots";
 import { TGetBotResDto, TGetUserBotResDto } from "@/server/dtos/rabot.dto";
 import axios from "@/lib/axios";
 
-const rabotDatasDetails = () => {
+const rabotDetails = () => {
   const params = useParams<{ id: string }>();
   const { user } = useUserStore();
   const dispatch = useAppDispatch();
@@ -51,6 +51,9 @@ const rabotDatasDetails = () => {
         description: rabotData?.description,
         type: rabotData?.type,
         userBotSmartWalletAddress: newSmartWalletAddress,
+        userBotDepositedAmount: parseFloat(
+          rabotData?.userBotDepositedAmount ?? "0"
+        ),
       })
     );
   }
@@ -90,7 +93,7 @@ const rabotDatasDetails = () => {
           {/* <Button className='bg-[#FF5900]/10 border-2 border-[#FF5900] flex-1 rounded-xl'>
             Withdraw
           </Button> */}
-          <WithdrawModal />
+          <WithdrawModal rabotData={rabotData} />
           <Button
             onClick={handleFundBotClick}
             className="bg-[#FF5900]/10 border-2 border-[#FF5900] flex-1 rounded-xl"
@@ -103,4 +106,4 @@ const rabotDatasDetails = () => {
   );
 };
 
-export default rabotDatasDetails;
+export default rabotDetails;

@@ -1,7 +1,11 @@
-import BaseIcon from '../../public/BaseIcon.png';
-import MaticIcon from '../../public/maticIcon.svg';
+import BaseIcon from "../../public/BaseIcon.png";
+import MaticIcon from "../../public/maticIcon.svg";
 
-export const useGetBlockchainLogo = ({ blockchain }: { blockchain?: string }) => {
+export const useGetBlockchainLogo = ({
+  blockchain,
+}: {
+  blockchain?: string;
+}) => {
   const logos = {
     polygon: MaticIcon,
     base: BaseIcon,

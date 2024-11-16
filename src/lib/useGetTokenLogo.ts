@@ -12,6 +12,7 @@ export const useGetTokenLogo = ({ token }: { token: string }) => {
     POL: MaticIcon,
   };
 
+
   const tokenLogo = (logos as any)?.[token];
 
   return tokenLogo;
