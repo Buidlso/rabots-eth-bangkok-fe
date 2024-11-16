@@ -37,23 +37,19 @@ export const useFetchRabots = (dependsOn = true) => {
   });
 };
 
-export const useFetchRabotById = (rabotsId: string, dependsOn = true) => {
+export const useFetchRabotById = (
+  rabotsId: string,
+  userId: string,
+  dependsOn = true
+) => {
   const dispatch = useAppDispatch();
 
   async function fetchRabots() {
-    const { data: rabotData } = await axios.get<TGetBotResDto>(
-      `/bots/${rabotsId}`
+    const { data } = await axios.get<TGetBotResDto>(
+      `/bots/${rabotsId}/user/${userId}`
     );
-    const { data: userBotData } = await axios.get<TGetUserBotResDto>(
-      `/user-bots/${rabotsId}`
-    );
-    return {
-      id: rabotData.id,
-      name: rabotData.name,
-      description: rabotData.description,
-      type: rabotData.type,
-      userBotSmartWalletAddress: userBotData?.smartWalletAddress,
-    };
+
+    return data;
   }
 
   function onSuccess(resp?: any) {

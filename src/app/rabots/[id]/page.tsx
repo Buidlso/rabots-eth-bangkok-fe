@@ -4,8 +4,8 @@ import { LeftArrowIcon } from "@/components/icons";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React from "react";
-import dummyRabotIcon from "../../../components/icons/dummyRabotIcon.png";
-import { useAppDispatch, useRabotsStore, useUserStore } from "@/redux/hooks";
+import dummyrabotIcon from "../../../components/icons/dummyrabotIcon.png";
+import { useAppDispatch, useUserStore } from "@/redux/hooks";
 import { walletActions } from "@/redux/actions";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -14,16 +14,17 @@ import { useFetchRabotById, useFetchUserBotById } from "@/server/api/rabots";
 import { TGetBotResDto, TGetUserBotResDto } from "@/server/dtos/rabot.dto";
 import axios from "@/lib/axios";
 
-const RabotsDetails = () => {
+const rabotDatasDetails = () => {
   const params = useParams<{ id: string }>();
   const { user } = useUserStore();
+  const dispatch = useAppDispatch();
 
-  const { data: rabot } = useFetchRabotById(params.id);
+  const { data: rabotData } = useFetchRabotById(params.id, user?.id);
 
   const createUserBot = async () => {
     const payload = {
       userId: user?.id,
-      botId: rabot?.id,
+      botId: rabotData?.id,
     };
     const res = await axios.post(`/user-bots`, payload);
 
@@ -31,25 +32,35 @@ const RabotsDetails = () => {
     return smartWalletAddress;
   };
 
-  // const { rabot } = useRabotsStore();
-
-  const dispatch = useAppDispatch();
+  // const { rabotData } = userabotDatasStore();
 
   async function handleFundBotClick() {
-    let newSmartWalletAddress = "";
-    if (!rabot?.userBotSmartWalletAddress) {
+    let newSmartWalletAddress = rabotData?.userBotSmartWalletAddress ?? "";
+    if (!rabotData?.userBotSmartWalletAddress) {
+      console.log("Creating user bot...");
+
       newSmartWalletAddress = await createUserBot();
+      console.log("newSmartWalletAddress", newSmartWalletAddress);
     }
 
     dispatch(walletActions.setWalletScreen("FUND"));
-    dispatch(walletActions.setSelectedRabot(rabot));
+    dispatch(
+      walletActions.setSelectedRabot({
+        id: rabotData?.id,
+        name: rabotData?.name,
+        description: rabotData?.description,
+        type: rabotData?.type,
+        userBotSmartWalletAddress: newSmartWalletAddress,
+      })
+    );
+    console.log("after creating bot", { rabotData });
   }
 
   function handleBackClick() {
     dispatch(walletActions.setWalletScreen("BALANCE"));
   }
 
-  console.log({ rabot });
+  console.log({ rabotData });
 
   return (
     <div className="rounded-xl bg-[#121212] p-6 h-full">
@@ -66,17 +77,17 @@ const RabotsDetails = () => {
         <div>
           <div className="mb-3 flex items-center gap-6">
             <Image
-              src={dummyRabotIcon}
-              alt="dummy-rabot-icon"
+              src={dummyrabotIcon}
+              alt="dummy-rabotData-icon"
               width={50}
               height={50}
             />
             <div>
-              <h1 className="mb-3 text-[#FF5900] text-xl">{rabot?.name}</h1>
+              <h1 className="mb-3 text-[#FF5900] text-xl">{rabotData?.name}</h1>
               <p className="text-white font-light">Earn 3-4% APR with ezETH</p>
             </div>
           </div>
-          <p className="text-white/40 font-light">{rabot?.description}</p>
+          <p className="text-white/40 font-light">{rabotData?.description}</p>
         </div>
         <div className=" flex w-full gap-3">
           {/* <Button className='bg-[#FF5900]/10 border-2 border-[#FF5900] flex-1 rounded-xl'>
@@ -95,4 +106,4 @@ const RabotsDetails = () => {
   );
 };
 
-export default RabotsDetails;
+export default rabotDatasDetails;
