@@ -5,14 +5,18 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import React from "react";
 import dummyRabotIcon from "../../../components/icons/dummyRabotIcon.png";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useRabotsStore } from "@/redux/hooks";
 import { walletActions } from "@/redux/actions";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import WithdrawModal from "@/components/withdraw/WithdrawModal";
+import { useFetchRabotById } from "@/server/api/rabots";
 
 const RabotsDetails = () => {
   const params = useParams<{ id: string }>();
+  const { data } = useFetchRabotById(params.id);
+
+  const { rabot } = useRabotsStore();
 
   const dispatch = useAppDispatch();
 
@@ -45,15 +49,11 @@ const RabotsDetails = () => {
               height={50}
             />
             <div>
-              <h1 className="mb-3 text-[#FF5900] text-xl">Bot {params.id}</h1>
+              <h1 className="mb-3 text-[#FF5900] text-xl">{rabot?.name}</h1>
               <p className="text-white font-light">Earn 3-4% APR with ezETH</p>
             </div>
           </div>
-          <p className="text-white/40 font-light">
-            Adipisicing ipsum do ea Lorem id ex veniam adipisicing est sint.
-            Occaecat sit reprehenderit nostrud velit minim laboris laboris dolor
-            dolore enim. Aliquip consectetur exercitation{" "}
-          </p>
+          <p className="text-white/40 font-light">{rabot?.description}</p>
         </div>
         <div className=" flex w-full gap-3">
           {/* <Button className='bg-[#FF5900]/10 border-2 border-[#FF5900] flex-1 rounded-xl'>

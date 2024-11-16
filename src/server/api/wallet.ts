@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useAppDispatch } from "@/redux/hooks";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { walletActions } from "@/redux/actions";
-import axios from "@/lib/axios";
 
 export const useGetWalletBalances = (
   walletAddress: string,
@@ -88,6 +88,36 @@ export const useCreateTransaction = (
     // onSuccess,
     // onError,
     // retry: 0,
+    enabled: dependsOn,
+  });
+};
+export const useGetAllNetworkWalletBalance = (
+  walletAddress: string,
+  dependsOn = true
+) => {
+  const dispatch = useAppDispatch();
+
+  async function fetchAllNetworkBalance() {
+    const { data } = await axios.get(
+      `/wallet/all-balances-by-address?walletAddress=${walletAddress}`
+    );
+    return data;
+  }
+
+  function onSuccess(resp?: any) {}
+
+  // on Error
+  function onError(error: AxiosError<any>) {
+    console.log({ error });
+  }
+
+  return useQuery({
+    queryKey: ["ALL_NETWORK_BALANCE"],
+    queryFn: fetchAllNetworkBalance,
+    // keepPreviousData: true,
+    // onSuccess,
+    // onError,
+    retry: 0,
     enabled: dependsOn,
   });
 };

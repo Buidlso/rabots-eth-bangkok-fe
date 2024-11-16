@@ -4,12 +4,13 @@ import { useAppDispatch } from "@/redux/hooks";
 import { AxiosError } from "axios";
 import { rabotsActions } from "@/redux/actions";
 import axios from "@/lib/axios";
+import { TGetBotResDto, TListBotsResDto } from "../dtos/rabot.dto";
 
 export const useFetchRabots = (page: number, dependsOn = true) => {
   const dispatch = useAppDispatch();
 
   async function fetchRabots() {
-    const { data } = await axios.get(`http://localhost:8000/rabots`);
+    const { data } = await axios.get<TListBotsResDto>(`/rabots`);
     return data;
   }
 
@@ -37,9 +38,7 @@ export const useFetchRabotById = (rabotsId: string, dependsOn = true) => {
   const dispatch = useAppDispatch();
 
   async function fetchRabots() {
-    const { data } = await axios.get(
-      `http://localhost:8000/rabots/${rabotsId}`
-    );
+    const { data } = await axios.get<TGetBotResDto>(`/rabots/${rabotsId}`);
     return data;
   }
 

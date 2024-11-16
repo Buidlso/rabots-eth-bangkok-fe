@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { CrossIcon, FilterIcon, RefreshIcon } from "../icons";
 import { net } from "web3";
 import { Button } from "../ui/button";
+import { useGetAllNetworkWalletBalance } from '@/server/api/wallet';
 
 interface Network {
   id: string;
@@ -20,6 +21,10 @@ const SelectFundNetwork = () => {
     { id: "sol", name: "Solana", balance: "71.8", ethBalance: "0.0910" },
   ];
 
+  const walletAddress = '';
+
+  const { data } = useGetAllNetworkWalletBalance(walletAddress);
+  
   const [activeNetwork, setActiveNetwork] = useState<string>("");
 
   const handleNetworkSelect = (networkId: string) => {

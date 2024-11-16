@@ -91,20 +91,20 @@ const page = () => {
         if (web3auth.status === ADAPTER_EVENTS.CONNECTED) {
           setLoggedIn(true);
           console.log("setLoaggedIn(true)");
+          router.replace("/rabots");
+
+          console.log({ googleAuthRes });
+
           const payload = {
-            name: googleAuthRes.user.providerData?.[0]?.displayName,
-            email: googleAuthRes.user.email || "",
-            uid: googleAuthRes.user.providerData?.[0]?.uid,
-            walletAddress: walletAddress,
+            name: googleAuthRes?.user?.providerData?.[0]?.displayName ?? "",
+            email: googleAuthRes?.user?.email || "",
+            uid: googleAuthRes?.user?.providerData?.[0]?.uid ?? "",
+            walletAddress: walletAddress ?? "",
           };
+
+          const res = await axios.post<any>(`/users`, payload);
           localStorage.setItem("ethPrivateKey", ethPrivateKey);
           localStorage.setItem("ethWalletAddress", walletAddress);
-
-          const { data } = await axios.post<any>(`/users`, payload);
-
-          if (!!data) {
-            router.replace("/rabots");
-          }
         }
       } catch (error) {
         console.error(error);

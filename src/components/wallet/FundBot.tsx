@@ -3,11 +3,11 @@ import ethIcon from "../../components/Icons/ethIcon.svg";
 import Image from "next/image";
 import SelectFundNetwork from "./SelectFundNetwork";
 import FundBotError from "./FundBotError";
-import FundBotSuccess from "./FundBotSuccess";
 import FundBotLoading from "./FundBotLoading";
 import { getInfuraRpcNetwork } from "@/lib/utils";
 import { ethers } from "ethers";
 import { Button } from "../ui/button";
+import FundBotSuccess from "./FundBotSuccess";
 
 const FundBot = () => {
   const [inputTokenAmount, setInputTokenAmount] = useState<number>(0);
@@ -63,7 +63,7 @@ const FundBot = () => {
       {isFundError ? (
         <FundBotError setIsFundError={setIsFundError} />
       ) : isFundSuccess ? (
-        <FundBotSuccess />
+        <FundBotSuccess txHash={transactionHash} />
       ) : isFundLoading ? (
         <FundBotLoading />
       ) : (

@@ -1,20 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type TRabotsState = {
-  rabotsBalance: any;
+  rabots: any[];
+  rabot: any;
 };
 
 // states
 const initialState: TRabotsState = {
-  rabotsBalance: undefined,
+  rabots: [],
+  rabot: undefined,
 };
 
 const rabotsSlice = createSlice({
   name: "rabots",
   initialState,
   reducers: {
-    setRabots(state, action: PayloadAction<any>) {
-      state.rabotsBalance = action.payload;
+    setRabots(state, action: PayloadAction<any[]>) {
+      state.rabots = action.payload;
+    },
+    setRabot(state, action: PayloadAction<any>) {
+      state.rabot = action.payload;
     },
   },
 });
