@@ -18,6 +18,8 @@ const RabotsDetails = () => {
 
   const { rabot } = useRabotsStore();
 
+  console.log({rabot})
+  
   const dispatch = useAppDispatch();
 
   function handleFundBotClick() {

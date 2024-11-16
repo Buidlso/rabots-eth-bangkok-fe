@@ -6,7 +6,7 @@ import { rabotsActions } from "@/redux/actions";
 import axios from "@/lib/axios";
 import { TGetBotResDto, TListBotsResDto } from "../dtos/rabot.dto";
 
-export const useFetchRabots = (page: number, dependsOn = true) => {
+export const useFetchRabots = ( dependsOn = true) => {
   const dispatch = useAppDispatch();
 
   async function fetchRabots() {

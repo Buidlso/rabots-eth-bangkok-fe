@@ -92,7 +92,7 @@ const page = () => {
         if (web3auth.status === ADAPTER_EVENTS.CONNECTED) {
           setLoggedIn(true);
           console.log("setLoaggedIn(true)");
-          router.replace("/rabots");
+          router.push("/rabots");
 
           console.log({ googleAuthRes });
 
@@ -104,8 +104,6 @@ const page = () => {
           // };
 
           // const res = await axios.post<any>(`/users`, payload);
-          localStorage.setItem("ethPrivateKey", ethPrivateKey);
-          localStorage.setItem("ethWalletAddress", walletAddress);
         }
       } catch (error) {
         console.error(error);
@@ -158,7 +156,17 @@ const page = () => {
       setProvider(web3authProvider);
       const address = await RPC.getAccounts(web3authProvider);
 
+      const ethPrivateKey = await web3authProvider?.request({
+        method: "eth_private_key",
+      });
       console.log({ address });
+
+      console.log('🦁🦁🦁🦁🦁', { ethPrivateKey });
+      console.log('🦁🦁🦁🦁🦁', { address });
+
+      
+      localStorage.setItem("ethPrivateKey", ethPrivateKey as string);
+      localStorage.setItem("ethWalletAddress", address);
 
       const payload = {
         name: loginRes?.user?.providerData?.[0]?.displayName ?? "",
@@ -182,87 +190,9 @@ const page = () => {
     }
   };
 
-  const getUserInfo = async () => {
-    // IMP START - Get User Information
-    const user = await web3auth.getUserInfo();
-    // IMP END - Get User Information
-    console.log({ user });
-  };
-
-  const dispatch = useAppDispatch();
-
   let userWalletData;
   const [ethPrivateKey, setEthPrivateKey] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
-
-  const createUserAccount = async (
-    ethPrivateKey: string,
-    walletAddress: string
-  ) => {
-    console.log({ walletAddress });
-
-    const payload = {
-      name: googleAuthRes.user.providerData?.[0]?.displayName,
-      email: googleAuthRes.user.email || "",
-      uid: googleAuthRes.user.providerData?.[0]?.uid,
-      walletAddress: walletAddress,
-    };
-    localStorage.setItem("ethPrivateKey", ethPrivateKey);
-    localStorage.setItem("ethWalletAddress", walletAddress);
-
-    const { data } = await axios.post<any>(`/users`, payload);
-    console.log({ data });
-    if (!!data) {
-      dispatch(
-        userActions.setUser({
-          walletAddress: walletAddress,
-          privateKey: ethPrivateKey,
-        })
-      );
-      router.push("/rabots");
-    }
-
-    console.log("createUserAccount");
-  };
-
-  const getUserAccount = async () => {
-    // useFetchUser();
-  };
-
-  const getAccounts = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-
-    getUserInfo();
-    const address = await RPC.getAccounts(provider);
-
-    const ethPrivateKey = await provider?.request({
-      method: "eth_private_key",
-    });
-    setEthPrivateKey(ethPrivateKey as string);
-    setWalletAddress(address);
-    console.log(ethPrivateKey);
-    // uiConsole(address, ethPrivateKey);
-    return {
-      address,
-      ethPrivateKey,
-    };
-  };
-
-  useEffect(() => {
-    const userWalletInfo = async () => {
-      const user = await getAccounts();
-      console.log("userWalletData", user);
-
-      if (!user) {
-        return;
-      }
-      createUserAccount((user as any)?.ethPrivateKey, (user as any)?.address);
-    };
-    userWalletInfo();
-  }, []);
 
   if (isPageLoading) {
     return (

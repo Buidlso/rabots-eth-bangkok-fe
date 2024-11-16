@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { RabotEnum } from '../enums';
+import { RabotEnum } from "@/rabot.enum";
+import { z } from "zod";
 
 export const CreateBotReqTransformer = z.object({
   name: z.string(),

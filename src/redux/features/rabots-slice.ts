@@ -1,8 +1,9 @@
+import { TGetBotResDto, TListBotsResDto } from "@/server/dtos/rabot.dto";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type TRabotsState = {
-  rabots: any[];
-  rabot: any;
+  rabots: TListBotsResDto;
+  rabot: TGetBotResDto | undefined;
 };
 
 // states

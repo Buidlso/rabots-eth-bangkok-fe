@@ -5,19 +5,13 @@ import Link from "next/link";
 import { useFetchRabotById } from "@/server/api/rabots";
 
 type RabotCardProps = {
-  botId: number | string;
-  name: string;
-  subtitle: string;
-  description: string;
+  botId: any;
+  name: any;
+  subtitle: any;
+  description: string | null;
 };
 
-const RabotCard = ({
-  botId,
-
-  description,
-  name,
-  subtitle,
-}: RabotCardProps) => {
+const RabotCard = ({ botId, description, name, subtitle }: RabotCardProps) => {
   return (
     <div className="bg-black p-6  flex-1 min-w-80">
       <Image
