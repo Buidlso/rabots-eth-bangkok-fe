@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { RabotIcon, SettingsIcon } from "./icons";
 import { Button } from "./ui/button";
-import { FileText } from "lucide-react";
+import { Clock8, FileText } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -26,7 +26,7 @@ const Sidebar = () => {
       icon: RabotIcon,
     },
     { id: 2, label: "Analytics", icon: FileText, link: "/analytics" },
-    { id: 3, label: "settings", icon: SettingsIcon, link: "#" },
+    { id: 3, label: "Transactions", icon: Clock8, link: "/transactions" },
   ];
 
   return (
@@ -38,12 +38,12 @@ const Sidebar = () => {
           <Link
             href={button.link}
             key={button.id}
-            className={` flex items-center justify-center gap-2  transition-colors duration-200 hover:bg-none  ${
+            className={` flex items-center justify-center gap-3 transition-colors duration-200 hover:bg-none  ${
               isActive ? " text-accent" : " text-white hover:text-accent"
             }`}
             onClick={() => setActiveButton(button.id)}
           >
-            <button.icon className="inline-block w-fit flex-shrink-0 " />
+            <button.icon className="inline-block w-fit flex-shrink-0 size-5" />
             <p className="capitalize">{button.label}</p>
           </Link>
         );

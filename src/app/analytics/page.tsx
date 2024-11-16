@@ -10,7 +10,6 @@ const page = () => {
     <div className='flex items-stretch justify-center p-10 h-screen gap-10 '>
       <Sidebar />
       <Analytics />
-      <Wallet />
     </div>
   );
 };

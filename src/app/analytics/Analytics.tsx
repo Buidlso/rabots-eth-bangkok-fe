@@ -2,7 +2,7 @@ import React from 'react';
 
 const Analytics = () => {
   return (
-    <div className='bg-[#121212] rounded-xl h-full flex-1'>
+    <div className='bg-[#121212] rounded-xl h-full flex-1 w-full'>
       <div className='flex flex-wrap items-stretch justify-center gap-3 w-full  p-6'>
         <div className='border border-white/40 rounded-xl p-3 flex-1 bg-black'>
           <p className='text-white text-sm mb-3'>Gross Revenue</p>
