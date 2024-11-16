@@ -14,12 +14,11 @@ import { useFetchRabotById } from "@/server/api/rabots";
 
 const RabotsDetails = () => {
   const params = useParams<{ id: string }>();
-  const { data } = useFetchRabotById(params.id);
 
-  const { rabot } = useRabotsStore();
+  const { data: rabot } = useFetchRabotById(params.id);
 
-  console.log({rabot})
-  
+  // const { rabot } = useRabotsStore();
+
   const dispatch = useAppDispatch();
 
   function handleFundBotClick() {

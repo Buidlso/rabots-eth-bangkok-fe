@@ -1,14 +1,21 @@
-import React from 'react';
-import WalletAssets from './WalletAssets';
+import React from "react";
+import WalletAssets from "./WalletAssets";
+import { useGetWalletBalances } from "@/server/api/wallet";
 
-const WalletBalance = () => {
+const WalletBalance = ({ walletAddress }: { walletAddress: string }) => {
+  const { data: walletBalance } = useGetWalletBalances(walletAddress);
+
+  console.log({ walletBalance });
+
   return (
-    <div className='flex flex-col items-center w-full gap-3'>
-      <div className='bg-black rounded-xl py-6 text-center flex flex-col items-center justify-center w-full'>
-        <h1 className='text-5xl text-white'>$20.00</h1>
-        <p className='text-white/40 text-sm'>Total balance</p>
+    <div className="flex flex-col items-center w-full gap-3">
+      <div className="bg-black rounded-xl py-6 text-center flex flex-col items-center justify-center w-full">
+        <h1 className="text-5xl text-white">
+          ${parseFloat(walletBalance?.totalBalanceUsd)?.toFixed(3)}
+        </h1>
+        <p className="text-white/40 text-sm">Total balance</p>
       </div>
-      <WalletAssets />
+      <WalletAssets walletBalance={walletBalance} />
     </div>
   );
 };

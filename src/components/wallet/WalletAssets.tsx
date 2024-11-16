@@ -1,35 +1,9 @@
 import React from "react";
 import { FilterIcon, RefreshIcon } from "../icons";
+import { useGetBlockchainLogo } from "@/lib/useGetBlockchainLogo";
+import { useGetTokenLogo } from "@/lib/useGetTokenLogo";
 
-type TDummyAssets = {
-  network: string;
-  name: string;
-  networkBalance: number;
-  dollorBalance: number;
-};
-
-const dummyAssets = [
-  {
-    network: "Ethereum",
-    name: "ETH",
-    networkBalance: 0.0012,
-    dollorBalance: 1.12,
-  },
-  {
-    network: "Polygon",
-    name: "MATIC",
-    networkBalance: 0.0012,
-    dollorBalance: 1.12,
-  },
-  {
-    network: "Solana",
-    name: "SOL",
-    networkBalance: 0.0012,
-    dollorBalance: 1.12,
-  },
-];
-
-const WalletAssets = () => {
+const WalletAssets = ({ walletBalance }: { walletBalance: any }) => {
   return (
     <div className="bg-black rounded-md px-3 py-6 w-full">
       <div className="flex items-center justify-between">
@@ -42,23 +16,43 @@ const WalletAssets = () => {
           </div>
         </div>
       </div>
+      {walletBalance?.assets?.map((asset: any, index: number) => {
+        const blockchainLogo = useGetBlockchainLogo({
+          blockchain: asset?.blockchain,
+        });
+        const tokenLogo = useGetTokenLogo({
+          token: asset?.tokenSymbol,
+        });
 
-      {dummyAssets.map((asset: TDummyAssets, index: number) => (
-        <div
-          key={index}
-          className="flex items-center justify-between py-3 border-b border-[#3A3A3A]/60"
-        >
-          <div className="flex items-center gap-2">
-            {/* IMAGE HERE OF BLOCKCHAIN */}
-            <div className="w-10 h-10 rounded-full bg-muted"></div>
-            <p className="text-white">{asset.name}</p>
+        return (
+          <div
+            key={index}
+            className="flex items-center justify-between py-3 border-b border-[#3A3A3A]/60"
+          >
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                {tokenLogo && (
+                  <img src={tokenLogo} className="w-6 aspect-square" />
+                )}
+                {blockchainLogo && (
+                  <img
+                    src={blockchainLogo}
+                    className="absolute bottom-0 right-0 w-3 aspect-square bg-white rounded-full p-1"
+                  />
+                )}
+              </div>
+              <div className="w-10 h-10 rounded-full bg-muted"></div>
+              <p className="text-white">{asset.tokenSymbol}</p>
+            </div>
+            <div>
+              <p>{parseFloat(asset.balanceUsd)?.toFixed(3)}</p>
+              <p className="text-muted">
+                {asset.balance} {asset.tokenSymbol}
+              </p>
+            </div>
           </div>
-          <div>
-            <p>${asset.dollorBalance}</p>
-            <p className="text-muted">{asset.networkBalance}</p>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

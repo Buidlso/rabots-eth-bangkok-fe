@@ -13,7 +13,7 @@ export const useGetWalletBalances = (
 
   async function fetchWallet() {
     const { data } = await axios.get(
-      `http://localhost:8000/wallet/balance/${walletAddress}`
+      `http://localhost:8000/users/all-balances-by-address?walletAddress=${walletAddress}`
     );
     return data;
   }
@@ -88,36 +88,6 @@ export const useCreateTransaction = (
     // onSuccess,
     // onError,
     // retry: 0,
-    enabled: dependsOn,
-  });
-};
-export const useGetAllNetworkWalletBalance = (
-  walletAddress: string,
-  dependsOn = true
-) => {
-  const dispatch = useAppDispatch();
-
-  async function fetchAllNetworkBalance() {
-    const { data } = await axios.get(
-      `/wallet/all-balances-by-address?walletAddress=${walletAddress}`
-    );
-    return data;
-  }
-
-  function onSuccess(resp?: any) {}
-
-  // on Error
-  function onError(error: AxiosError<any>) {
-    console.log({ error });
-  }
-
-  return useQuery({
-    queryKey: ["ALL_NETWORK_BALANCE"],
-    queryFn: fetchAllNetworkBalance,
-    // keepPreviousData: true,
-    // onSuccess,
-    // onError,
-    retry: 0,
     enabled: dependsOn,
   });
 };

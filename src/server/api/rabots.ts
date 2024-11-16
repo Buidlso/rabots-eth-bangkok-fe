@@ -6,11 +6,11 @@ import { rabotsActions } from "@/redux/actions";
 import axios from "@/lib/axios";
 import { TGetBotResDto, TListBotsResDto } from "../dtos/rabot.dto";
 
-export const useFetchRabots = ( dependsOn = true) => {
+export const useFetchRabots = (dependsOn = true) => {
   const dispatch = useAppDispatch();
 
   async function fetchRabots() {
-    const { data } = await axios.get<TListBotsResDto>(`/rabots`);
+    const { data } = await axios.get<TListBotsResDto>(`/bots`);
     return data;
   }
 
@@ -26,7 +26,6 @@ export const useFetchRabots = ( dependsOn = true) => {
   return useQuery({
     queryKey: ["RABOTS"],
     queryFn: fetchRabots,
-    // keepPreviousData: true,
     // onSuccess,
     // onError,
     retry: 0,
@@ -38,7 +37,7 @@ export const useFetchRabotById = (rabotsId: string, dependsOn = true) => {
   const dispatch = useAppDispatch();
 
   async function fetchRabots() {
-    const { data } = await axios.get<TGetBotResDto>(`/rabots/${rabotsId}`);
+    const { data } = await axios.get<TGetBotResDto>(`/bots/${rabotsId}`);
     return data;
   }
 

@@ -22,7 +22,6 @@ const getChainId = async (provider: IProvider): Promise<any> => {
     })
 
     const address = await walletClient.getAddresses()
-    console.log(address)
 
     const chainId = await walletClient.getChainId()
     return chainId.toString();
@@ -61,7 +60,6 @@ const getBalance = async (provider: IProvider): Promise<string> => {
     const address = await walletClient.getAddresses();
 
     const balance = await publicClient.getBalance({ address: address[0] });
-    console.log(balance)
     return formatEther(balance);
   } catch (error) {
     return error as string;
@@ -91,7 +89,6 @@ const sendTransaction = async (provider: IProvider): Promise<any> => {
       to: destination,
       value: amount,
     });
-    console.log(hash)
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
 
 
@@ -121,8 +118,6 @@ const signMessage = async (provider: IProvider): Promise<any> => {
       account: address[0],
       message: originalMessage
     });
-
-    console.log(hash)
 
     return hash.toString();
   } catch (error) {

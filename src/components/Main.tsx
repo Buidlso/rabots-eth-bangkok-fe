@@ -118,7 +118,6 @@ function Main() {
       const googleProvider = new GoogleAuthProvider();
       const res = await signInWithPopup(auth, googleProvider);
       setGoogleAuthRes(res);
-      console.log(res);
       return res;
     } catch (err) {
       console.error(err);
@@ -207,7 +206,6 @@ function Main() {
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
     }
-    console.log(...args);
   }
 
   const loggedInView = (

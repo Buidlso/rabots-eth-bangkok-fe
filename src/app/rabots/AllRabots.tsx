@@ -11,10 +11,7 @@ type TDummyRabots = {
 };
 
 const AllRabots = () => {
-  const { data } = useFetchRabots();
-  const { rabots } = useRabotsStore();
-
-  console.log({ rabots }, "sdfkjaskl;fjlkfjasl;kfjsaf");
+  const { data: rabots } = useFetchRabots();
 
   return (
     <div className="min-h-screen rounded-md bg-[#121212] px-6 py-3">

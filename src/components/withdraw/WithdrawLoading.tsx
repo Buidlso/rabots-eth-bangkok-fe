@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import loading from "@/public/loading.svg";
+import loading from "../../../public/loading.svg";
 import { RabotIcon } from "../icons";
 import { Button } from "../ui/button";
 

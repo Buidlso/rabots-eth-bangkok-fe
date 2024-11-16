@@ -91,19 +91,7 @@ const page = () => {
 
         if (web3auth.status === ADAPTER_EVENTS.CONNECTED) {
           setLoggedIn(true);
-          console.log("setLoaggedIn(true)");
           router.push("/rabots");
-
-          console.log({ googleAuthRes });
-
-          // const payload = {
-          //   name: googleAuthRes?.user?.providerData?.[0]?.displayName ?? "",
-          //   email: googleAuthRes?.user?.email || "",
-          //   uid: googleAuthRes?.user?.providerData?.[0]?.uid ?? "",
-          //   walletAddress: walletAddress ?? "",
-          // };
-
-          // const res = await axios.post<any>(`/users`, payload);
         }
       } catch (error) {
         console.error(error);
@@ -119,11 +107,8 @@ const page = () => {
       const auth = getAuth(app);
       const googleProvider = new GoogleAuthProvider();
       const res = await signInWithPopup(auth, googleProvider);
-      console.log({ res });
-      console.log("setGoogleAuthRes");
       setGoogleAuthRes(res);
 
-      console.log(res);
       return res;
     } catch (err) {
       console.error(err);
@@ -135,7 +120,6 @@ const page = () => {
   const handleLoginClick = async () => {
     setIsPageLoading(true);
     if (!web3auth) {
-      console.log("web3auth initialised yet");
       return;
     }
     const loginRes = await signInWithGoogle();
@@ -149,8 +133,6 @@ const page = () => {
     });
     // IMP END - Login
 
-    console.log({ loginRes });
-
     if (web3authProvider) {
       setLoggedIn(true);
       setProvider(web3authProvider);
@@ -159,11 +141,6 @@ const page = () => {
       const ethPrivateKey = await web3authProvider?.request({
         method: "eth_private_key",
       });
-      console.log({ address });
-
-      console.log('🦁🦁🦁🦁🦁', { ethPrivateKey });
-      console.log('🦁🦁🦁🦁🦁', { address });
-
       
       localStorage.setItem("ethPrivateKey", ethPrivateKey as string);
       localStorage.setItem("ethWalletAddress", address);
@@ -182,7 +159,6 @@ const page = () => {
       }
 
       if (typeof window !== "undefined") {
-        console.log("window.location.reload()");
         setIsPageLoading(false);
 
         window.location.reload();
