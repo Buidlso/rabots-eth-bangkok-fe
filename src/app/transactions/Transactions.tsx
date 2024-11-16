@@ -26,6 +26,7 @@ const Transactions = () => {
 
     if (!walletAddress) return;
 
+    // The request is being proxied from localhost:8080 to https://api.1inch.dev
     const url = `http://localhost:8080/history/v2.0/history/${walletAddress}/events`;
 
     const config = {
