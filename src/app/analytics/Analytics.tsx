@@ -18,10 +18,10 @@ const Analytics = () => {
     setWallet({
       ethWalletAddress,
     });
-    fetchAnalytics(ethWalletAddress!);
+    fetchGeneralAnalytics(ethWalletAddress!);
   }, []);
 
-  const fetchAnalytics = async (walletAddress: string) => {
+  const fetchGeneralAnalytics = async (walletAddress: string) => {
     if (!walletAddress) return;
 
     // The request is being proxied from localhost:8080 to https://api.1inch.dev
