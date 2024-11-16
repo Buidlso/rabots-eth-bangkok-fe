@@ -76,6 +76,7 @@ const page = () => {
   const { mutateAsync: createUser } = useCreateUserMutation();
   const [googleAuthRes, setGoogleAuthRes] = useState<any>();
   const router = useRouter();
+  const [isPageLoading, setIsPageLoading] = useState(false);
 
   // Firebase Initialisation
   const app = initializeApp(firebaseConfig);
@@ -95,14 +96,14 @@ const page = () => {
 
           console.log({ googleAuthRes });
 
-          const payload = {
-            name: googleAuthRes?.user?.providerData?.[0]?.displayName ?? "",
-            email: googleAuthRes?.user?.email || "",
-            uid: googleAuthRes?.user?.providerData?.[0]?.uid ?? "",
-            walletAddress: walletAddress ?? "",
-          };
+          // const payload = {
+          //   name: googleAuthRes?.user?.providerData?.[0]?.displayName ?? "",
+          //   email: googleAuthRes?.user?.email || "",
+          //   uid: googleAuthRes?.user?.providerData?.[0]?.uid ?? "",
+          //   walletAddress: walletAddress ?? "",
+          // };
 
-          const res = await axios.post<any>(`/users`, payload);
+          // const res = await axios.post<any>(`/users`, payload);
           localStorage.setItem("ethPrivateKey", ethPrivateKey);
           localStorage.setItem("ethWalletAddress", walletAddress);
         }
@@ -120,7 +121,10 @@ const page = () => {
       const auth = getAuth(app);
       const googleProvider = new GoogleAuthProvider();
       const res = await signInWithPopup(auth, googleProvider);
+      console.log({ res });
+      console.log("setGoogleAuthRes");
       setGoogleAuthRes(res);
+
       console.log(res);
       return res;
     } catch (err) {
@@ -131,6 +135,7 @@ const page = () => {
   // IMP END - Auth Provider Login
 
   const handleLoginClick = async () => {
+    setIsPageLoading(true);
     if (!web3auth) {
       console.log("web3auth initialised yet");
       return;
@@ -146,9 +151,34 @@ const page = () => {
     });
     // IMP END - Login
 
+    console.log({ loginRes });
+
     if (web3authProvider) {
       setLoggedIn(true);
       setProvider(web3authProvider);
+      const address = await RPC.getAccounts(web3authProvider);
+
+      console.log({ address });
+
+      const payload = {
+        name: loginRes?.user?.providerData?.[0]?.displayName ?? "",
+        email: loginRes?.user?.email || "",
+        uid: loginRes?.user?.providerData?.[0]?.uid ?? "",
+        walletAddress: address ?? "",
+      };
+
+      try {
+        const res = await axios.post<any>(`/users`, payload);
+      } catch (error) {
+        console.log("create user error", { error });
+      }
+
+      if (typeof window !== "undefined") {
+        console.log("window.location.reload()");
+        setIsPageLoading(false);
+
+        window.location.reload();
+      }
     }
   };
 
@@ -234,6 +264,14 @@ const page = () => {
     userWalletInfo();
   }, []);
 
+  if (isPageLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-white">loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center justify-around gap-10 h-full">
       <div className="flex flex-col  justify-center  p-6 h-[550px]">
@@ -249,7 +287,7 @@ const page = () => {
           <GoogleIcon />
           Login with Google
         </Button>
-        {loggedIn && <p className="text-red-500">logged in bro</p>}
+        {/* {loggedIn && <p className="text-red-500">logged in bro</p>} */}
       </div>
       <div className="max-w-4xl">
         <Image src={loginBg} alt="login-bg" />

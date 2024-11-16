@@ -67,7 +67,7 @@ const dummyRabots: TDummyRabots[] = [
 
 const AllRabots = () => {
   return (
-    <div className='h-full rounded-md bg-[#121212] px-6 py-3'>
+    <div className='h-full rounded-md bg-[#121212] px-6 py-3 text-white'>
       <h3>Rabots</h3>
       <div className=' flex flex-wrap gap-2'>
         {dummyRabots.map((rabot) => (
