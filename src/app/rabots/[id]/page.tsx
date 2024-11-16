@@ -53,14 +53,11 @@ const rabotDatasDetails = () => {
         userBotSmartWalletAddress: newSmartWalletAddress,
       })
     );
-    console.log("after creating bot", { rabotData });
   }
 
   function handleBackClick() {
     dispatch(walletActions.setWalletScreen("BALANCE"));
   }
-
-  console.log({ rabotData });
 
   return (
     <div className="rounded-xl bg-[#121212] p-6 h-full">

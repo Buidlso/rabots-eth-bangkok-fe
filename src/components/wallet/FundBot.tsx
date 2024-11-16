@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import FundBotSuccess from "./FundBotSuccess";
 import { useGetWalletBalances } from "@/server/api/wallet";
 import { useWalletStore } from "@/redux/hooks";
+import SelectWalletAssets from "./SelectWalletAssets";
 
 const FundBot = ({
   walletAddress,
@@ -24,7 +25,7 @@ const FundBot = ({
   const [isFundLoading, setIsFundLoading] = useState(false);
   const [transactionHash, setTransactionHash] = useState("");
   const [errorTransaction, setErrorTransaction] = useState("");
-  const [selectedToken, setSelectedToken] = useState<{
+  const [selectedToken, setSelectedToken] = React.useState<{
     token?: string;
     network?: string;
   }>({
@@ -106,12 +107,12 @@ const FundBot = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-between bg-[#121212] rounded-xl py-2 px-3 text-white">
-              <p className="text-xs">Gas</p>
-              <p className="text-sm">$0.5 | 0.00005 eth</p>
-            </div>
           </div>
-          <p className="text-white text-center">Your eth balance - 99.00</p>
+          <SelectWalletAssets
+            walletBalance={walletBalance}
+            setSelectedToken={setSelectedToken}
+            selectedToken={selectedToken}
+          />
         </div>
       )}
 
