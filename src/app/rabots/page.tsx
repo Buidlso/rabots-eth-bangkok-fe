@@ -1,14 +1,9 @@
-import Sidebar from '@/components/Sidebar';
-import AllRabots from './AllRabots';
-import Wallet from '@/components/wallet/Wallet';
-
+import AllRabots from "./AllRabots";
 
 export default function page() {
   return (
-    <div className='bg-black h-full overflow-hidden flex items-stretch justify-center gap-8 p-10'>
-      <Sidebar />
+    <div className="">
       <AllRabots />
-      <Wallet />
     </div>
   );
 }

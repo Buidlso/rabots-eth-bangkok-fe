@@ -272,8 +272,6 @@ function Main() {
       ethPrivateKey: string,
       walletAddress: string
     ) => {
-      // await createUserAccount()
-
       console.log({ walletAddress });
 
       const payload = {
@@ -282,13 +280,20 @@ function Main() {
         uid: googleAuthRes.user.providerData?.[0]?.uid,
         walletAddress: walletAddress,
       };
+      localStorage.setItem("ethPrivateKey", ethPrivateKey);
+      localStorage.setItem("ethWalletAddress", walletAddress);
 
       console.log("payload", payload);
 
       const { data } = await axios.post<any>(`/users`, payload);
       console.log({ data });
       if (!!data) {
-        dispatch(userActions.setUser(data));
+        dispatch(
+          userActions.setUser({
+            walletAddress: walletAddress,
+            privateKey: ethPrivateKey,
+          })
+        );
         router.push("/rabots");
       }
 

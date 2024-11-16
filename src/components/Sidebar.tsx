@@ -12,12 +12,12 @@ interface Button {
 }
 
 const Sidebar = () => {
-  const [activeButton, setActiveButton] = useState<number | null>(null);
+  const [activeButton, setActiveButton] = useState<number | null>(1);
   const buttons: Button[] = [
     {
       id: 1,
       label: "rabots",
-      link: "/rabots/id",
+      link: "/rabots",
       icon: RabotIcon,
     },
     { id: 2, label: "likes", icon: HeartIcon },
@@ -31,7 +31,7 @@ const Sidebar = () => {
           key={button.id}
           className={`w-12 h-12 flex items-center justify-center  py-2 px-4 rounded-full transition-colors duration-200 hover:bg-none border-2 ${
             activeButton === button.id
-              ? "bg-orange-500/15 text-white border-orange-500"
+              ? 'bg-[#FF5900]/15 text-[#FF5900] border-orange-500'
               : "bg-white/15 text-white border-white"
           }`}
           onClick={() => setActiveButton(button.id)}

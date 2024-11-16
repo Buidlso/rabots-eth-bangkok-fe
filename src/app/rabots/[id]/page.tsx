@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import React from "react";
 import dummyRabotIcon from "../../../components/icons/dummyRabotIcon.png";
+import { useAppDispatch } from "@/redux/hooks";
+import { walletActions } from "@/redux/actions";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import WithdrawModal from "@/components/withdraw/WithdrawModal";
@@ -12,11 +14,22 @@ import WithdrawModal from "@/components/withdraw/WithdrawModal";
 const RabotsDetails = () => {
   const params = useParams<{ id: string }>();
 
+  const dispatch = useAppDispatch();
+
+  function handleFundBotClick() {
+    dispatch(walletActions.setWalletScreen("FUND"));
+  }
+
+  function handleBackClick() {
+    dispatch(walletActions.setWalletScreen("BALANCE"));
+  }
+
   return (
     <div className="rounded-xl bg-[#121212] p-6 h-full">
       <Link
         href={"/rabots"}
         className="text-[#FF5900] flex items-center gap-2 cursor-pointer mb-3"
+        onClick={handleBackClick}
       >
         <LeftArrowIcon />
         Back
@@ -47,7 +60,10 @@ const RabotsDetails = () => {
             Withdraw
           </Button> */}
           <WithdrawModal />
-          <Button className="bg-[#FF5900]/10 border-2 border-[#FF5900] flex-1 rounded-xl">
+          <Button
+            onClick={handleFundBotClick}
+            className="bg-[#FF5900]/10 border-2 border-[#FF5900] flex-1 rounded-xl"
+          >
             Fund
           </Button>
         </div>

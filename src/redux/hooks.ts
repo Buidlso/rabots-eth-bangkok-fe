@@ -9,3 +9,5 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const useLayoutStore = () => useAppSelector((state) => state.layout);
+export const useWalletStore = () => useAppSelector((state) => state.wallet);
+export const useUserStore = () => useAppSelector((state) => state.user);
