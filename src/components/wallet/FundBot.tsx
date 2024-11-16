@@ -2,19 +2,66 @@ import React, { useState } from "react";
 import ethIcon from "../../components/Icons/ethIcon.svg";
 import Image from "next/image";
 import SelectFundNetwork from "./SelectFundNetwork";
-import FundBotSuccess from "./FundBotSuccess";
 import FundBotError from "./FundBotError";
+import FundBotSuccess from "./FundBotSuccess";
 import FundBotLoading from "./FundBotLoading";
+import { getInfuraRpcNetwork } from "@/lib/utils";
+import { ethers } from "ethers";
+import { Button } from "../ui/button";
 
 const FundBot = () => {
+  const [inputTokenAmount, setInputTokenAmount] = useState<number>(0);
   const [isFundError, setIsFundError] = useState(false);
   const [isFundSuccess, setIsFundSuccess] = useState(false);
   const [isFundLoading, setIsFundLoading] = useState(false);
+  const [transactionHash, setTransactionHash] = useState("");
+  const [errorTransaction, setErrorTransaction] = useState("");
+  const [selectedToken, setSelectedToken] = useState<{
+    token?: string;
+    network?: string;
+  }>({
+    token: undefined,
+    network: undefined,
+  });
+  const privateKey = "0x1234567890"; // Replace with actual private key
+
+  const sendTransaction = async () => {
+    const rpcUrl = getInfuraRpcNetwork(selectedToken?.network!);
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const signer = new ethers.Wallet(privateKey, provider);
+
+    try {
+      setIsFundLoading(true);
+      const tx = await signer.sendTransaction({
+        // to: fundBotSelectedBot.userBotSmartWalletAddress,
+        to: "0x1234567890", // Replace with actual wallet address
+        value: ethers.parseUnits(`${inputTokenAmount}`, "ether"),
+      });
+      setTransactionHash(tx.hash);
+      setIsFundLoading(false);
+      // await createTransactionOnDb();
+    } catch (error) {
+      setErrorTransaction((error as any).message);
+      setIsFundLoading(false);
+    }
+  };
+
+  async function handleSendTransaction() {
+    if (inputTokenAmount <= 0) {
+      setErrorTransaction("Please enter a valid amount");
+      return;
+    }
+    try {
+      await sendTransaction();
+    } catch (error) {
+      setErrorTransaction((error as any).shortMessage);
+    }
+  }
 
   return (
     <div className="max-w-md">
       {isFundError ? (
-        <FundBotError />
+        <FundBotError setIsFundError={setIsFundError} />
       ) : isFundSuccess ? (
         <FundBotSuccess />
       ) : isFundLoading ? (
@@ -39,12 +86,14 @@ const FundBot = () => {
                   <input
                     type="number"
                     className="text-end border-none bg-[#121212] rounded-r-xl rounded-br-xl py-2 px-3 text-white h-full focus:outline-none"
-                    value={0.01945}
+                    value={inputTokenAmount}
+                    onChange={(e) =>
+                      setInputTokenAmount(parseFloat(e.target.value))
+                    }
                   />
                 </div>
               </div>
             </div>
-
             <div className="flex items-center justify-between bg-[#121212] rounded-xl py-2 px-3 text-white">
               <p className="text-xs">Gas</p>
               <p className="text-sm">$0.5 | 0.00005 eth</p>
@@ -55,8 +104,13 @@ const FundBot = () => {
       )}
 
       <SelectFundNetwork />
+      <Button
+        onClick={handleSendTransaction}
+        className="bg-[#FF5900] text-black rounded-full w-full mt-5 hover:bg-[#FF5900]"
+      >
+        Continue
+      </Button>
     </div>
   );
 };
-
 export default FundBot;

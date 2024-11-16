@@ -1,23 +1,24 @@
-import React, { useState } from "react";
-import ethIcon from "@/components/icons/ethIcon.svg";
+import React, { useEffect, useState } from "react";
+import ethIcon from "@/components/Icons/ethIcon.svg";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import { ethers } from "ethers";
 
 const WithdrawInput = () => {
   const withdrawAmountSelectOptions = ["10%", "25%", "50%", "75%", "100%"];
   const [withdrawPercentage, setWithdrawPercentage] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [estimatedGas, setEstimatedGas] = useState<string | null>(null);
+  const walletAddress = "734923bkbk374234jdsfkdhfdsfj"; // Replace with actual wallet address
+  const privateKey = "0x1234567890"; // Replace with actual private key
+  const userBotDepositedAmount = 0.0389;
 
   const calculateValues = (value: number, field: "percentage" | "eth") => {
-    const userBotDepositedAmount = 0.0389;
-
     // if (userBotDepositedAmount === 0) {
     //   setWithdrawAmount(0);
     //   setWithdrawPercentage(0);
     //   return;
     // }
-
     if (field === "percentage") {
       const ethValue = (userBotDepositedAmount * value) / 100;
       setWithdrawPercentage(value);
@@ -30,14 +31,74 @@ const WithdrawInput = () => {
     }
   };
 
+  const estimateGas = async () => {
+    if (!withdrawAmount || !walletAddress) return;
+
+    // const rpcUrl = getInfuraRpcNetwork('base'); // Replace with actual Infura RPC URL
+    const rpcUrl = ""; // Replace with actual Infura RPC URL
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const signer = new ethers.Wallet(privateKey, provider);
+
+    try {
+      const txDetails = {
+        to: walletAddress,
+        value: ethers.parseUnits(`${withdrawAmount}`, "ether"),
+      };
+
+      const estimatedGasLimit = await provider.estimateGas({
+        ...txDetails,
+        from: signer.address,
+      });
+
+      const feeData = await provider.getFeeData();
+      const gasPrice = feeData.gasPrice;
+
+      if (!gasPrice) {
+        throw new Error("Unable to fetch gas price from provider.");
+      }
+
+      const estimatedGasInWei = estimatedGasLimit * gasPrice;
+      const estimatedGasInEth = ethers.formatUnits(estimatedGasInWei, "ether");
+
+      setEstimatedGas(estimatedGasInEth);
+    } catch (error) {}
+  };
+
+  const debounceEstimateGas = () => {
+    const delayDebounceFn = setTimeout(() => {
+      estimateGas();
+    }, 500); // Adjust debounce delay as needed
+
+    return () => clearTimeout(delayDebounceFn);
+  };
+
+  const handlePercentageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value) || 0;
+    setWithdrawPercentage(value);
+    calculateValues(value, "percentage");
+  };
+
+  const handleEthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value) || 0;
+    calculateValues(value, "eth");
+  };
+
   const handleSelectWithdrawlInput = (amount: number) => {
     calculateValues(amount, "percentage");
   };
 
+  // useEffect(() => {
+  //   if (withdrawAmount > 0) {
+  //     debounceEstimateGas();
+  //   }
+  // }, [withdrawAmount]);
+
   return (
     <div>
       <div className="bg-black rounded-xl p-4 mb-3">
-        <h2 className="text-[#FF5900] text-xl">Total Earned: 0.0389 eth</h2>
+        <h2 className="text-[#FF5900] text-xl">
+          Total Earned: {userBotDepositedAmount} eth
+        </h2>
 
         <div className="">
           <p className="text-white text-sm mb-2">
@@ -60,6 +121,7 @@ const WithdrawInput = () => {
             <div className="flex items-center text-white relative">
               <input
                 type="text"
+                onChange={handlePercentageChange}
                 value={withdrawPercentage}
                 className="text-start border-none bg-[#121212] rounded-r-xl rounded-br-xl py-2 px-3 text-white h-full focus:outline-none max-w-16  rounded-xl"
               />
@@ -90,7 +152,7 @@ const WithdrawInput = () => {
           {withdrawAmountSelectOptions.map((option, idx) => {
             return (
               <button
-                className=" bg-black rounded-full text-white px-3 py-1"
+                className="bg-black rounded-full text-white px-3 py-1"
                 onClick={() => handleSelectWithdrawlInput(parseInt(option))}
                 key={idx}
               >

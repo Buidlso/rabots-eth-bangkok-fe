@@ -81,9 +81,6 @@ const SelectFundNetwork = () => {
           ))}
         </div>
       </div>
-      <Button className="bg-[#FF5900] text-black rounded-full w-full mt-5 hover:bg-[#FF5900]">
-        Continue
-      </Button>
     </div>
   );
 };

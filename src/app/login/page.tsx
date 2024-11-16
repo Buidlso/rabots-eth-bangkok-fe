@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { GoogleIcon } from "@/components/icons";
 import Image from "next/image";
@@ -212,7 +212,12 @@ const page = () => {
       const user = await getAccounts();
       console.log("userWalletData", user);
 
-      createUserAccount((user as any).ethPrivateKey, (user as any).address);
+      
+      
+      if (!user) {
+        return;
+      }
+      createUserAccount((user as any)?.ethPrivateKey, (user as any)?.address);
     };
     userWalletInfo();
   }, []);
@@ -234,6 +239,7 @@ const page = () => {
           <GoogleIcon />
           Login with Google
         </Button>
+        {loggedIn && <p className="text-red-500">logged in bro</p>}
       </div>
       <div className="max-w-4xl">
         <Image src={loginBg} alt="login-bg" />

@@ -7,8 +7,8 @@ export default function RabotsLayout({
 }) {
   return (
     <div className='bg-black h-full overflow-hidden flex items-stretch justify-center gap-8 p-10'>
-      <Sidebar />
-      <main>{children}</main>
+     <Sidebar />
+      <main className='overflow-y-auto no-scrollbar'>{children}</main>
       <Wallet />
     </div>
   );
