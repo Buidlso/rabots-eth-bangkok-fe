@@ -35,7 +35,7 @@ const WithdrawSuccess = () => {
           <p className="text-white">View transaction</p>
           <div className="text-[#FF5900] flex items-center gap-2">
             <Link
-              //   href={`https://basescan.org/tx/${txHash}`}
+              //   href={`https://base.blockscout.com/tx/${txHash}`}
               href={`#`}
               target="_blank"
               rel="noreferrer"
